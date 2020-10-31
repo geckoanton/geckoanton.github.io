@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Quadrum</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="global.css" media="all">
+	<link rel="icon" href="design/logo.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<header class="header">
+		<nav class="nav">
+			<ul>
+				<li class="logoClass"><a href="index.html" title="Quadrum Homepage"><img src="design/logoName.png" style="margin-bottom:-3px;" width="240px" height="64px" alt=""></a></li>
+				<li><a href="tutorial.html">Tutorial</a></li>
+				<li><a href="serial.html">Serial</a></li>
+				<li><a href="help.html">Help</a></li>
+				<li class="download"><a href="download.html"><img src="design/downloadIcon.png" style="margin-bottom:-8px; margin-left:-4px;" width="32px" height="32px" alt="">Download</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="page">
+		<h1>
+			Software for LED-Cubes
+		</h1>
+		<p>
+			LED-Cubes are fun DIY electronics projects that (depending on the cube size) can be really beginner-fiendly. Together with an awesome 3D-screen as an end result, you will learn how to solder, control a large number of LED:s, program microcontrollers and much more!
+		</p>
+		<p>
+			Quadrum is an open-source LED-Cube framework that helps you create and upload animations to the cube (the cube can have sizes between 2x2x2 and 8x8x8). Animations can be streamed in real-time from the editor to the LED-Cube with the help of an Arduino library, alternatively get uploaded to the Arduino through the use of the editor’s code generating function. <a href=tutorial.html>This quick tutorial</a> will explain in step-by-step how you can implement Quadrum on your cube.
+		</p>
+		<img src="images/demo.png" width="800" height="434">
+			<h3 class="line">
+				GitHub
+			</h3>
+			<img class="line" src="design/githubLogo.png" width="29" style="margin-left: 4px; margin-top: 13px;">
+		<p>
+			Visit <a href="">Quadrum on GitHub</a>! The GitHub repository contains the Quadrum source code together with licence agreement and other information.
+		</p>
+		<h3>
+			Non-Arduino Microcontrollers
+		</h3>
+		<p>
+			Altough there currently is no library for microcontrollers other than Arduino, the Quadrum editor does not care whether the device on the other end of the serial bus is an Arduino or not as long as it responds in a similar way. If your microcontroller has support for C++, the porting of the library can be achieved by simply changing a few Arduino-specific functions inside <i>QuadrumSerial.cpp</i> and <i>QuadrumCode.cpp</i> respectively. You can download the Arduino library <a href="download.html#arduinoDownload">here</a>.
+		</p>
+	</div>
+
+	<footer class="footer">
+		<div class="footerPage">
+			<p style="padding-top:20px; padding-bottom:-11px; margin-bottom:-11px; color: #D1D1D1;">Contact me: <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a></p>
+			<p style="color: #D1D1D1;">Icons: <a href="https://icons8.com/" target="_blank">https://icons8.com/</a></p>
+			<p style="color: #D1D1D1;">Copyright &copy; 2020 antongecko. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+
+</html>

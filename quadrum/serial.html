@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Serial - Quadrum</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="global.css" media="all">
+	<link rel="icon" href="design/logo.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<header class="header">
+		<nav class="nav">
+			<ul>
+				<li class="logoClass"><a href="index.html" title="Quadrum Homepage"><img src="design/logoName.png" style="margin-bottom:-3px;" width="240px" height="64px" alt=""></a></li>
+				<li><a href="tutorial.html">Tutorial</a></li>
+				<li class="current"><a href="serial.html">Serial</a></li>
+				<li><a href="help.html">Help</a></li>
+				<li class="download"><a href="download.html"><img src="design/downloadIcon.png" style="margin-bottom:-8px; margin-left:-4px;" width="32px" height="32px" alt="">Download</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="page">
+		<h1>
+			Uploading QuadrumSerial Library
+		</h1>
+		<p>
+			Before the Quadrum editor can stream animations to the LED-Cube you must upload the QuadrumSerial library to your Arduino. Follow <a href="tutorial.html">this tutorial</a> on how to use and upload the Arduino serial library.
+		</p>
+		<h1 id="connectingToArduino">
+			Connecting to Arduino
+		</h1>
+		<p>
+			To connect to the Arduino through a serial port, select the <i>Serial</i> tab on the left side of the editor. Plug the Arduino in using a USB cable and wait for it to show up in the <i>Available Ports</i> list. Select the port in the list and click connect. For a more detailed explanation visit <a href="help.html#serialStreaming">this page</a>.
+		</p>
+		<p>
+			When a connection is established and your animation is played in the editor it will be streamed to and played on the LED-Cube.
+		</p>
+		<h1>
+			Serial Troubleshooting
+		</h1>
+		<img src="images/serialFail.png" width="800" height="434">
+		<p>
+			Did your serial connection fail? Don't worry, just look after your error message in the <i>Console</i> window (located underneath the <i>Available Ports</i> list). Below you can find solutions on how to fix the different errors.
+		</p>
+		<ul>
+			<li><a href="#connectionFailed">connection failed</a></li>
+			<li><a href="#connectionTimedOut">connection timed out</a></li>
+			<li><a href="#receivedImproperResponse">received improper response</a></li>
+		</ul>
+		<h3 id="connectionFailed">
+			<i>connection failed</i>
+		</h3>
+		<ul>
+			<li>Make sure to close the Arduino IDE (or any other program that may interfere with the serial port).</li>
+			<li>Restart the Quadrum editor.</li>
+			<li>If you are on Linux, run the following commands in the terminal (<i>not</i> the <i>Console</i> window in the editor):</li>
+			<div class="console">
+				<p>
+					sudo usermod -a -G uucp &ltusername&gt<br>
+					sudo usermod -a -G dialout &ltusername&gt<br>
+					sudo usermod -a -G lock &ltusername&gt<br>
+					sudo usermod -a -G tty &ltusername&gt
+				</p>
+			</div>
+			<p>Replace every &ltusername&gt with your own username.</p>
+		</ul>
+		<h3 id="connectionTimedOut">
+			<i>connection timed out</i>
+		</h3>
+		<ul>
+			<li>Ensure the Arduino has the QuadrumSerial library <i>and</i> that it has been initialized properly.</li>
+			<li>The side length of your cube together with the channel count and channel resolution may be more than the Arduino can handle. Try decreasing the channel resolution or channel count.</li>
+		</ul>
+		<h3 id=receivedImproperResponse>
+			<i>received improper response</i>
+		</h3>
+		<ul>
+			<li>Reset the Arduino and/or unplug and replug the USB cable.</li>
+			<li>Ensure the Arduino has the QuadrumSerial library <i>and</i> that it has been initialized properly.</li>
+		</ul>
+		<p>Are you still receiving an error message? Feel free to contact me at <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a>.</p>
+		<h1 id="bandwidth">
+			Serial Bandwidth
+		</h1>
+		<p>
+			If you managed to successfully connect to the cube (i.e. the console window displays the message "connected"), yet still don't get the cube to display anything (or frames appear to lag) when playing the animation in the editor you can try following these steps:
+		</p>
+		<ul>
+			<li>Click on <i>Simulator</i> > <i>Play</i> from the menu at the top while connected to the cube. Let the animation play for a while (even though it is only played on the computer).</li>
+			<li>Go to the Serial tab to the left of the editor and click on disconnect, now the console window will display the number of failed frames that were detected during the connection.</li>
+			<li>If the number of failed frames is greater than 0 you have a problem with the bandwidth of the serial connection.</li>
+		</ul>
+		<p>
+			If the steps above showed that the bandwidth of the serial connection is struggling you can increase the time for which each frame is displayed, thus giving more time for every frame to be sent over to the cube. If this is not an option you can attempt decreasing the channel resolution and/or the amount of channels, the last argument in the QuadrumSerial constructor call (frame speed) cannot be too large either since Quadrum uses the time in between frames to transfer data, for more details on this visit the <a href="tutorial.html#limitations">limitations section of the tutorial</a>.
+		</p>
+	</div>
+
+	<footer class="footer">
+		<div class="footerPage">
+			<p style="padding-top:20px; padding-bottom:-11px; margin-bottom:-11px; color: #D1D1D1;">Contact me: <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a></p>
+			<p style="color: #D1D1D1;">Icons: <a href="https://icons8.com/" target="_blank">https://icons8.com/</a></p>
+			<p style="color: #D1D1D1;">Copyright &copy; 2020 antongecko. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+
+</html>

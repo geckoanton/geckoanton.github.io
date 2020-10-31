@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Help - Quadrum</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="global.css" media="all">
+	<link rel="icon" href="design/logo.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<header class="header">
+		<nav class="nav">
+			<ul>
+				<li class="logoClass"><a href="index.html" title="Quadrum Homepage"><img src="design/logoName.png" style="margin-bottom:-3px;" width="240px" height="64px" alt=""></a></li>
+				<li><a href="tutorial.html">Tutorial</a></li>
+				<li><a href="serial.html">Serial</a></li>
+				<li class="current"><a href="help.html">Help</a></li>
+				<li class="download"><a href="download.html"><img src="design/downloadIcon.png" style="margin-bottom:-8px; margin-left:-4px;" width="32px" height="32px" alt="">Download</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="page">
+		<h1>
+			Table of Contents
+		</h1>
+		<ul>
+			<li><a href="#createNewProject">Create New Project</a></li>
+			<li><a href="#saveOpenProject">Save and Open Project</a></li>
+			<li><a href="#paintAnimation">Paint Animation</a></li>
+			<li><a href="#serialStreaming">Serial Streaming</a></li>
+			<li><a href="#generatingCode">Generating Code</a></li>
+		</ul>
+		<p>Isn't the help you are looking for in the list? Feel free to contact me at <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a>.</p>
+		<h3 id="createNewProject">
+			Create New Project
+		</h1>
+		<img src="images/newProject.png" width="483" height="316">
+		<p>
+			If you are on the welcome screen, press the green button <i>New</i> on the left side of the screen. If you are already in the editor go to <i>File</i> > <i>New</i> from the menu at the top.
+		</p>
+		<p>
+			This will open the <i>New Project</i> setup wizard. Select the cube side of choice by clicking on the squares to the left, alternatively increment/decrement the cube side with the left and right arrow buttons. Give the project a name in the bottom text field and press <i>Create</i>.
+		</p>
+		<h3 id="saveOpenProject">
+			Save and Open Project
+		</h1>
+		<img src="images/openSave.png" width="483" height="316">
+		<p>
+			To save a project go to <i>File</i> > <i>Save</i> from the menu at the top. When opening a saved project go to <i>File</i> > <i>Open</i> instead. If you are on the welcome screen, click the <i>Open</i> button to open a project.
+		</p>
+		<h3 id="paintAnimation">
+			Paint Animation
+		</h1>
+		<img src="images/paintTop.png" width="483" height="348">
+		<p>
+			The Paint tools are located under the <i>Paint</i> tab to the left. The cube will be sliced up in planes from top to bottom, click on a pixel in its plane to paint it and the simulator will directly update this pixel to the right. If the cube has a large enough cube side all plains may not be visible at once, to scroll through them use the left and right arrow buttons below the planes.
+		</p>
+		<p>
+			To change the paint color, click on the color picker in between the right and left plane-selecting buttons. If your cube only has support for one color, the editor will ignore the colors when streaming/generating code and instead treat the pixels as gray-scale.
+		</p>
+		<img src="images/paintBottom.png" width="483" height="276">
+		<p>
+			Below the sliced planes you find setting such as how long (in milliseconds) the currently selected frame will be displayed and whether the animation shall replay itself over and over again.
+		</p>
+		<p>
+			Next there is the frames list, click on a frame in the list to select it. Add a new frame with the <i>+</i> button in the botom left corner, remove the current frame with the <i>x</i> button next to the add button. The copy and paste buttons are located to the right of the add/remove buttons, copy will copy the current frame and paste will paste the copied frame to the current frame.
+		</p>
+		<h3 id="serialStreaming">
+			Serial Streaming
+		</h1>
+		<img src="images/serialSuccess.png" width="800" height="434">
+		<p>
+			To be able to stream animations to the cube the Quadrum editor must be connected to the Arduino. Connect to it by pluging the USB-cable to the computer, the cube will show up in the <i>Available Ports</i> list. Click on the cube in the list and then click <i>Connect</i>. The console will give you the current status of the connection, if something isn't working check out the <a href="serial.html">serial page</a>.
+		</p>
+		<p>
+			When a connection has been established you can stream the current project by clicking on <i>Simulator</i> > <i>Play</i> from the menu at the top.
+		</p>
+		<h3 id="generatingCode">
+			Generating Code
+		</h1>
+		<img src="images/codeGeneration.png" width="800" height="434">
+		<p>
+			To upload an animation with an Arduino sketch you can implement the <i>QuadrumCode</i> library, follow <a href="tutorial.html">this tutorial</a> to see how it can be done. The library will require a uint8_t array containg the animation data which can be generated under the <i>Code</i> tab in the editor.
+		</p>
+		<p>
+			At the bottom of the <i>Code</i> tab there are two settings that must match with your cube; the first specifies the number of channels (colors) each LED in the cube has, and the second sets the resolution of each channel. Make sure to read the <a href="tutorial.html">tutorial</a> if you are unsure of what these settings mean.
+		</p>
+		<p>
+			Once the settings are set up correctly and the cube side in the editor matches the side of your cube (i.e. a 4x4x4 cube must get its animation from a 4x4x4 project in the editor) you can generate the code by clicking the <i>Generate</i> button. Copy and paste the code into the arduino sketch.
+		</p>
+	</div>
+
+	<footer class="footer">
+		<div class="footerPage">
+			<p style="padding-top:20px; padding-bottom:-11px; margin-bottom:-11px; color: #D1D1D1;">Contact me: <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a></p>
+			<p style="color: #D1D1D1;">Icons: <a href="https://icons8.com/" target="_blank">https://icons8.com/</a></p>
+			<p style="color: #D1D1D1;">Copyright &copy; 2020 antongecko. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+
+</html>

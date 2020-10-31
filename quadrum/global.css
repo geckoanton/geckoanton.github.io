@@ -1,0 +1,168 @@
+
+body {
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Roboto', sans-serif;
+}
+
+p {
+	color: #121212;
+}
+h1, h2, h3, h4, h5, h6 {
+	color: #121212;
+}
+
+a {
+	text-decoration: none;
+	color: #B1E5E8;
+}
+a:hover {
+	text-decoration: underline;
+	color: #A1D97D;
+}
+
+.header {
+	position: relative;
+	text-align: center;
+	background: url("design/tilesBackground.png") 0 100% repeat;
+	color: #D1D1D1;
+	margin-top: -12px;
+	white-space: nowrap;
+}
+
+img {
+	max-width: 90vw;
+	height: auto;
+}
+
+li.logo a {
+	padding-top: 100px;
+	padding-left: 0px;
+}
+
+.line {
+	vertical-align:top;
+	display:inline-block;
+	margin-bottom: 0px;
+}
+
+.nav {
+	margin-left: -40px;
+	padding: 20px;
+	padding-top: 32px;
+}
+.logoClass {
+	padding-left: 0px;
+}
+.nav li {
+	display: inline;
+	padding-right: calc(calc(min(400px, 45vw) - 220px) / 4);
+}
+li.download a {
+	margin-left: 8px;
+	margin-right: -45px;
+	padding: 5px;
+	padding-right: 10px;
+	padding-left: 9px;
+	color: #121212;
+	background-color: #D1D1D1;
+	border-radius: 5px;
+}
+li.download a:hover {
+	color: #121212;
+	background-color: #A1D97D;
+	text-decoration: underline;
+}
+.nav a {
+	text-decoration: none;
+	color: #D1D1D1;
+	font-size: min(160%, 3vw);
+
+}
+.nav .current a {
+	color: #A1D97D;
+}
+.nav .currentDownload a {
+	color: #121212;
+	background-color: #A1D97D;
+	text-decoration: none;
+}
+.nav a:hover {
+	color: #A1D97D;
+	text-decoration: underline;
+}
+
+.page {
+	position: relative;
+	min-height: 100vh;
+	width:800px;
+	min-width:0%;
+	max-width: min(100%, 92vw);
+	padding-left: max(calc(50vw - 400px), 4vw);
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
+.page a {
+	text-decoration: none;
+	color: #0065BA;
+}
+.page a:visited {
+	text-decoration: underline;
+	color: #B30094;
+}
+.page a:hover {
+	text-decoration: underline;
+	color: #55C31C;
+}
+
+.footer {
+	position: relative;
+	bottom: 0;
+	height: 118px;
+	text-align: center;
+	background: url("design/tilesBackground.png") 0 100% repeat;
+	color: #D1D1D1;
+}
+.footerPage {
+	text-align: left;
+	width:800px;
+	min-width:0%;
+	max-width: min(100%, 92vw);
+	padding-left: max(calc(50vw - 400px), 4vw);
+}
+
+
+.console p {
+	background-color: #121212;
+	border-radius: 5px;
+	color: #E8E8E8;
+	font-family: 'Roboto Mono', sans-serif;
+	font-size: 97%;
+	padding: 6px;
+	padding-left: 10px;
+	overflow: auto;
+	white-space: nowrap;
+}
+.code p {
+	background-color: #C1F7F7;
+	border-radius: 5px;
+	color: #121212;
+	font-family: 'Roboto Mono', sans-serif;
+	font-size: 97%;
+	padding: 6px;
+	padding-left: 10px;
+	overflow: auto;
+	white-space: nowrap;
+}
+.codeGreen {
+	color: #007711;
+}
+.codeOrange {
+	color: #DD7700;
+}
+.codeBlue {
+	color: #0077CC;
+}
+.codeGray {
+	color: #888888;
+}

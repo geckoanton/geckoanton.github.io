@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Tutorial - Quadrum</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="global.css" media="all">
+	<link rel="icon" href="design/logo.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<header class="header">
+		<nav class="nav">
+			<ul>
+				<li class="logoClass"><a href="index.html" title="Quadrum Homepage"><img src="design/logoName.png" style="margin-bottom:-3px;" width="240px" height="64px" alt=""></a></li>
+				<li class="current"><a href="tutorial.html">Tutorial</a></li>
+				<li><a href="serial.html">Serial</a></li>
+				<li><a href="help.html">Help</a></li>
+				<li class="download"><a href="download.html"><img src="design/downloadIcon.png" style="margin-bottom:-8px; margin-left:-4px;" width="32px" height="32px" alt="">Download</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="page">
+		<h1>
+			Before we start...
+		</h1>
+		<p>
+			This tutorial is not aimed to help you build and set up the electronics for the LED-Cube as there are a lot of <a href="https://www.instructables.com/id/4x4x4-LED-Cube-Arduino-Uno/" target="_blank">these tutorials</a> out there already. Instead we are going to focus on the software and see how Quadrum can be implemented on your cube.
+		</p>
+		<p>
+			There are two ways to get an animation from the Quadrum editor to the LED-Cube, and as a result this tutorial will be divided into two parts. Since some of the concepts introduced in one section are used in the other, it is recommended to read both the <i>Streaming Animations</i> and <i>Uploading Animations</i> parts even if you are planning on only using one of them.<br>
+			<ul>
+				<li><a href="#streamingAnimations">Streaming Animations</a> guides you through the use of the QuadrumSerial library, something needed when streaming animations in real-time from the computer.<br></li>
+				<li><a href="#codingAnimations">Uploading Animations</a> will explain how to use the code-generating function that together with the QuadrumCode library allows animations to be stored on the Arduino without the need of a PC.</li>
+			</ul>
+		</p>
+		<p>
+			Download the Quadrum library and editor <a href="download.html">here</a>. The library's .zip file will have to be imported into the Arduino IDE, if you are unsure of how to do so <a href="https://www.arduino.cc/en/guide/libraries#toc4" target="_blank">check this out</a>. The animation editor is <i>not</i> a library and installs like a regular desktop application.
+		</p>
+		<h3 id="limitations">
+			Limitations
+		</h3>
+		<p>
+			The serial library sends each frame in a compressed format when possible at the Arduino's fastest speed setting (115200 bits per second). However this may still not be fast enough for some settings the library allows you to make (for example having RGB enabled with 8 bit resolution on each channel on a 8x8x8 cube). If you are experiencing problems <a href="serial.html#bandwidth">this</a> guide can help you determine if the issues are caused by the serial bandwidth. In general: the smaller the cube size, the smaller the resolution of each color channel and the fewer color channels you have enabled, the faster the serial data will be streamed to the cube.
+		</p>
+		<p>
+			On top of giving problems with the serial bandwidth, a big cube size combined with large amounts of data for each LED can take up more memory on the Arduino than it can handle. Make sure that you don't exceed the memory limits of the Arduino!
+		</p>
+		<p>
+			Keep in mind that some Arduino models may not be suitable for very large cube sizes since they are too slow. If the Arduino spends too much time in the loop function it will slow down the frame-rate and make the cube appear to flicker (if you are multiplexing it), to solve this issue the speed at which the loop function is called can be increased - however this will decrease the time data can be sent from the computer to the Arduino (if this time is too small the cube will stop displaying any frames).
+		</p>
+		<h1 id="streamingAnimations">
+			Streaming Animations
+		</h1>
+		<p>
+		The QuadrumSerial library starts by getting set up with some information about the cube such as its size, number of colors each LED has (for example RGB or just one color), etc. Once this is done it will start waiting for a serial connection to be established, and start calling the <i>loop</i> function repeatedly each time with new data to be displayed on the cube.
+		</p>
+		<div class="code">
+			<p>
+				<span class="codeGreen">#include</span> &lt<span class="codeOrange">QuadrumSerial</span>.h&gt<br>
+				<span class="codeGray">
+					<br>/* first argument specifies cube side (in this case it is a 4x4x4 cube),
+					<br>second the number of channels (colors for each LED)
+					<br>third the resolution of each color (in this case 1 is just on/off)
+					<br>last argument sets the speed at which the loop function is called
+					<br>
+					<br>for debugging reasons the last argument is set to 256, a quite low setting, increase
+					<br>it as much as possible while still being able to stream frames to the cube */<br>
+				</span>
+				<span class="codeOrange">QuadrumSerial</span> qs(4, 1, 1, 256);<br>
+				<br>
+				<span class="codeBlue">void</span> <span class="codeGreen">setup</span>() {<br>
+					&nbsp&nbsp&nbsp&nbspqs.<span class="codeOrange">start</span>();	<span class="codeGray">// must be the last call inside setup function</span><br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGray">// nothing below qs.start() will be executed</span><br>
+				}<br>
+				<br>
+				<span class="codeBlue">int</span> y = 0;<br>
+				<span class="codeBlue">void</span> <span class="codeGreen">loop</span>() {<br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGray">// this is just an example, implement getVoxelState in the way that fits your LED cube</span><br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">for</span>(<span class="codeBlue">int</span> x = 0; x < 4; x++) {<br>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">for</span>(<span class="codeBlue">int</span> z = 0; z < 4; z++) {<br>
+								&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspqs.<span class="codeOrange">getVoxelState</span>(x, y, z);	<span class="codeGray">// returns true if voxel at x, y and z is on, otherwise returns false</span><br>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>
+					&nbsp&nbsp&nbsp&nbsp}<br>
+					<br>
+					&nbsp&nbsp&nbsp&nbspy++;<br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">if</span>(y >= 4)<br>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspy = 0;<br>
+				}<br>
+			</p>
+		</div>
+		<p>
+		The example code above shows how QuadrumSerial is set up and what call you can do (inside the <i>loop</i> function!) to get a particular LED's state. Keep in mind that it is up to you to take the data returned from the function <i>getVoxelState</i> and do something with it.
+		</p>
+		<p>
+		<b>Important:</b> Do not put a delay call inside the loop function, rather adjust the last argument in the QuadrumSerial constructor (that is 256 in the example above). QuadrumSerial will by itself wait in between each call to the loop function (and use this time to get new animation data from the computer).
+		</p>
+		<p>
+		For help on how to connect the Quadrum editor to your Arduino, <a href="serial.html#connectingToArduino">visit this page</a>.
+		</p>
+		<h3>
+		More than just on and off?
+		</h3>
+		<p>
+			Since <i>getVoxelState</i> only returns true or false at a given LED in the cube, this function cannot be used when you have multiple brightness levels (for example letting one LED stay dimmer and other ones brighter).
+		</p>
+		<div class="code">
+			<p>
+				<span class="codeOrange">getVoxelBrightness</span>(x, y, z);	<span class="codeGray">// returns uint8_t (value between 0 and 255) to give brightness of voxel</span><br>
+			</p>
+		</div>
+		<p>
+		The function above will return a value between 0 and 255 that represents the brightness of an LED at x, y and z. Remember to adjust the third argument in the QuadrumSerial constructor to something greater than 1, accepted arguments here are 1, 2, 4 and 8. A larger value will give a greater number of steps (between 0 and 255) for an LED's brigness level but will also result in a longer streaming time for each frame.
+		</p>
+		<h3>
+		Multiple colors (channels)
+		</h3>
+		<p>
+		Neither of the functions explained above have the ability to return multiple values for each LED (for example red, green and blue in the case of RGB cubes).
+		</p>
+		<div class="code">
+			<p>
+				<span class="codeOrange">getChannelState</span>(channel, x, y, z);	<span class="codeGray">// returns true if channel at x, y and z is on, otherwise returns false</span><br>
+			</p>
+		</div>
+		<p>
+		The function above will (similarly to <i>getVoxelState</i>) return true or false, however this time it requires an extra first argument that specifies the channel of the LED at x, y, and z. If you have QuadrumSerial setup for RGB: 0 will represent red, 1 green and 2 blue; when using 2 channels: 0 represents red and 1 represents green. To select how many channels QuadrumSerial should be set up for you can change the second argument in the QuadrumSerial constructor call, accepted values here are 1 (single color), 2 (red and green) and 3 (RGB).
+		</p>
+		<h3>
+		Both multiple colors and brightness levels
+		</h3>
+		<p>
+		The last function to cover is:
+		</p>
+		<div class="code">
+			<p>
+				<span class="codeOrange">getChannelBrightness</span>(channel, x, y, z);	<span class="codeGray">// returns uint8_t (value between 0 and 255) to give brightness of channel at x, y and z</span><br>
+			</p>
+		</div>
+		<p>
+		This is a combination of <i>getVoxelBrightness</i> and <i>getChannelState</i> that will similarly to getVoxelBrightness return a value between 0 and 255, but on top of that wants an extra first argument that specifies what channel to read from. To select the number of channels and steps between 0 and 255 that can be reached you can change the second and third argument in the constructor call (as we have done previously).
+		</p>
+		<h1 id="codingAnimations">
+			Uploading Animations
+		</h1>
+		<p>
+		When creating animations in Quadrum you can choose to upload them to the Arduino with your sketch, by doing so you will eliminate the need of a computer constantly streaming data to the cube. This will require the <i>QuadrumCode</i> library which you can implement in the following way:
+		</p>
+		<div class="code">
+			<p>
+				<span class="codeGreen">#include</span> &lt<span class="codeOrange">QuadrumCode</span>.h&gt<br>
+				<br>
+				<span class="codeBlue">const uint8_t</span> animation[29] = {0x04,0x01,0x01,0x02,0x00,0x00,0x00,0x7A,0x44,0x11,0x11,0x22,0x22,0x44,0x44,0x88,0x88,0x00,0x00,0x7A,0x44,0x88,0x88,0x44,0x44,0x22,0x22,0x11,0x11};<br>
+				<span class="codeGray">
+					<br>/* first argument retreives the animation uint8_t array generated by the Quadrum editor,
+					<br>last argument sets the speed at which the loop function is called */<br>
+				</span>
+				<span class="codeOrange">QuadrumCode</span> qc(animation, 256);<br>
+				<br>
+				<span class="codeBlue">void</span> <span class="codeGreen">setup</span>() {<br>
+					&nbsp&nbsp&nbsp&nbspqc.<span class="codeOrange">start</span>();	<span class="codeGray">// must be the last call inside setup function</span><br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGray">// nothing below qc.start() will be executed</span><br>
+				}<br>
+				<br>
+				<span class="codeBlue">int</span> y = 0;<br>
+				<span class="codeBlue">void</span> <span class="codeGreen">loop</span>() {<br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGray">// this is just an example, implement getVoxelState in the way that fits your LED cube</span><br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">for</span>(<span class="codeBlue">int</span> x = 0; x < 4; x++) {<br>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">for</span>(<span class="codeBlue">int</span> z = 0; z < 4; z++) {<br>
+								&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspqc.<span class="codeOrange">getVoxelState</span>(x, y, z);	<span class="codeGray">// returns true if voxel at x, y and z is on, otherwise returns false</span><br>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>
+					&nbsp&nbsp&nbsp&nbsp}<br>
+					<br>
+					&nbsp&nbsp&nbsp&nbspy++;<br>
+					&nbsp&nbsp&nbsp&nbsp<span class="codeGreen">if</span>(y >= 4)<br>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspy = 0;<br>
+				}<br>
+			</p>
+		</div>
+		<p>
+		The uint8_t array <i>animation</i> is generated under the <i>Code</i> tab to the left in the Quadrum editor. By selecting the appropriate settings (channel count and channel resolution) and clicking on <i>Generate</i> you can copy-paste this array into the arduino sketch so that it can be uploaded to the cube. The code above holds an example animation, it can be replaced with your animation of choice. If you are unsure of how to generate the <i>animation</i> uint8_t array you can find <a href="help.html#generatingCode">help here</a>.
+		</p>
+		<p>
+		As described in the section Streaming Animations in <i>QuadrumSerial</i>, the functions <i>getChannelBrightness</i>, <i>getVoxelBrightness</i>, <i>getChannelState</i> and <i>getVoxelState</i> are used in exactly the same way here.
+		</p>
+	</div>
+
+	<footer class="footer">
+		<div class="footerPage">
+			<p style="padding-top:20px; padding-bottom:-11px; margin-bottom:-11px; color: #D1D1D1;">Contact me: <a href="mailto:antongecko37@gmail.com">antongecko37@gmail.com</a></p>
+			<p style="color: #D1D1D1;">Icons: <a href="https://icons8.com/" target="_blank">https://icons8.com/</a></p>
+			<p style="color: #D1D1D1;">Copyright &copy; 2020 antongecko. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+
+</html>
