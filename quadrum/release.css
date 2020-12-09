@@ -1,0 +1,49 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: #121212;
+    background-color: #D1D1D1;
+    border-radius: 5px;
+    text-align: center;
+    padding: 16px;
+    margin-right: 32px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    text-decoration: none;
+    width: 140px;
+}
+
+li.yes a {
+    background-color: #64dd17;
+}
+li.maybe a {
+    background-color: #ffd600;
+}
+li.no a {
+    background-color: #ff6d00;
+}
+
+li.yes a:hover {
+    background-color: #9cff57;
+}
+li.maybe a:hover {
+    background-color: #ffff52;
+}
+li.no a:hover {
+    background-color: #ff9e40;
+}
+  
+li a:hover {
+    color: #121212;
+	text-decoration: underline;
+}
